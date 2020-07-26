@@ -1,0 +1,1032 @@
+swagger: '2.0'
+info:
+  description: RESTful Services for Forward Platform
+  version: 20.02.0090
+  title: Forward APIs
+  contact:
+    name: Issuer-Processing
+    email: DPSClientSolutionsAPI@visa.com
+host: mutualcertservicesgateway.visa.com
+basePath: /rsrv_forward
+tags:
+  - name: Account Services
+    description: Account Services API.
+  - name: Card Services
+    description: Card Services API.
+  - name: Generate CVV2
+    description: Generate CVV2 API.
+  - name: Profile Services
+    description: Profile Services API.
+paths:
+  '/accountservices/v1/accounts/{accountId}/balance':
+    put:
+      tags:
+        - Account Services
+      summary: Use this resource to keep the Shadow balance in sync with the system of record at Issuer/Fintech side.
+      operationId: balanceSyncUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: accountBalanceSyncRequest
+          description: accountBalanceSyncRequest
+          required: true
+          schema:
+            $ref: '#/definitions/AccountBalanceSyncRequest'
+        - name: accountId
+          in: path
+          description: A unique Id connected to the underlying SVA created and linked to this card..
+          required: true
+          type: string
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfEmptyResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /cardservices/v1/cards/activation:
+    post:
+      tags:
+        - Card Services
+      summary: Use this resource to activate the card
+      operationId: cardActivationUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - in: body
+          name: cardActivationRequest
+          description: cardActivationRequest
+          required: true
+          schema:
+            $ref: '#/definitions/CardActivationRequest'
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfEmptyResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/cards/{cardId}/cvv2':
+    post:
+      tags:
+        - Generate CVV2
+      summary: 'Use this resource to generate a CVV2 for a Personal Account Number (PAN). The PAN is identified by an alias {cardId} in the route. Clients initiate this call through a mobile app or web application for different purposes.'
+      operationId: generateCvv2ForCardAliasIdUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - in: body
+          name: generateCvv2Request
+          description: generateCvv2Request
+          required: true
+          schema:
+            $ref: '#/definitions/GenerateCvv2Request'
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfGenerateCvv2Response'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/cards/{cardId}/cvv2generation':
+    post:
+      tags:
+        - Generate CVV2
+      summary: 'Use this resource to generate a CVV2 for a Personal Account Number (PAN). The PAN is identified by an alias {cardId} in the route. Clients initiate this call through a mobile app or web application for different purposes.'
+      operationId: generateCvv2ForCardAliasIdUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - in: body
+          name: generateCvv2Request
+          description: generateCvv2Request
+          required: true
+          schema:
+            $ref: '#/definitions/GenerateCvv2Request'
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfGenerateCvv2Response'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/cards/{cardId}/pin':
+    put:
+      tags:
+        - Card Services
+      summary: Use this resource to set or update pin on a card identified by the cardID in the URI.
+      operationId: pinSetUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - in: body
+          name: pinSetRequest
+          description: pinSetRequest
+          required: true
+          schema:
+            $ref: '#/definitions/PinSetRequest'
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfEmptyResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/cards/{cardId}/replacements':
+    post:
+      tags:
+        - Card Services
+      summary: Use this resource to replace a card identified by the cardID in the URI.
+      operationId: replaceCardUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - in: body
+          name: replaceCardRequest
+          description: replaceCardRequest
+          required: true
+          schema:
+            $ref: '#/definitions/ReplaceCardRequest'
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfCardEnrollmentResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/cards/{cardId}/status':
+    get:
+      tags:
+        - Card Services
+      summary: Use this resource to get the card status of a card identified by the cardId in the URI.
+      operationId: getCardStatusUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfGetCardStatusResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - Card Services
+      summary: Use this resource to update the card status of a card identified by the cardId in the URI.
+      operationId: updateCardStatusUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: cardId
+          in: path
+          description: A unique value for the combination of PAN and App-Id.
+          required: true
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+        - in: body
+          name: updateCardStatusRequest
+          description: updateCardStatusRequest
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateCardStatusRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfGetCardStatusResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/cardservices/v1/programs/{programId}/cards':
+    post:
+      tags:
+        - Card Services
+      summary: 'Use this resource to create an Instant Enrollment card for a given programId identified by {programId} in the route'
+      operationId: instantIssueCardUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - in: body
+          name: cardRequest
+          description: cardRequest
+          required: true
+          schema:
+            $ref: '#/definitions/InstantIssueCardRequest'
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: programId
+          in: path
+          description: DPS generated field that points to a specific configuration for a client.
+          required: true
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfCardEnrollmentResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/profileservices/v1/profile/{profileId}':
+    get:
+      tags:
+        - Profile Services
+      summary: Use this resource to get profile on a card identified by the profileID in the URI.
+      operationId: getProfileUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: profileId
+          in: path
+          description: A unique Id connected to the underlying profile.
+          required: true
+          type: string
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfProfileGetResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    patch:
+      tags:
+        - Profile Services
+      summary: Use this resource to update profile on a card identified by the profileID in the URI.
+      operationId: updateProfileUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: app-id
+          in: header
+          description: The app-id is provisioned to the app when it is registered on the VDP. The app-id must be included in all API calls to the LaaS API.
+          required: false
+          type: string
+        - name: correlation-id
+          in: header
+          description: 'Id that uniquely identifies a request across distributed systems. Generally populated by the upstream system in this case, VDP or the client.'
+          required: false
+          type: string
+        - name: profileId
+          in: path
+          description: A unique Id connected to the underlying profile.
+          required: true
+          type: string
+        - in: body
+          name: profileUpdateRequest
+          description: profileUpdateRequest
+          required: true
+          schema:
+            $ref: '#/definitions/ProfileUpdateRequest'
+        - name: sponsor-id
+          in: header
+          description: 'After authenticating the app’s API credentials during runtime, the gateway will immediately look up the app-id bound to the API credentials. It will then determine if the call initiated from a Sponsors/Issuers application and if it did, the gateway will inject the associated sponsor-Id as a header before passing the request to the LaaS API.'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CommonResponseOfProfileUpdateResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+definitions:
+  AccountBalanceSyncRequest:
+    type: object
+    required:
+      - correlationId
+    properties:
+      availableBalance:
+        type: number
+        description: Current available balance amount.
+      correlationId:
+        type: string
+        description: 'A unique identifier for issuance request.In case of any system failure or retries events , client is expected to pass the same ID to avoid any duplicate issuance.'
+      ledgerBalance:
+        type: number
+        description: Current ledger balance amount.
+      timestamp:
+        type: string
+        description: Current date time in ms; Represents the timestamp when this balance sync request was originated.
+    title: AccountBalanceSyncRequest
+  Address:
+    type: object
+    properties:
+      primaryAddress:
+        description: Primary address.
+        $ref: '#/definitions/PrimaryAddress'
+    title: Address
+  CardActivationRequest:
+    type: object
+    required:
+      - primaryAccountNumber
+    properties:
+      primaryAccountNumber:
+        type: string
+        description: primaryAccountNumber
+    title: CardActivationRequest
+  CardEnrollmentResponse:
+    type: object
+    required:
+      - cardId
+      - expirationDate
+      - formType
+      - idempotentId
+      - orderId
+      - primaryAccountNumber
+      - status
+    properties:
+      accountId:
+        type: string
+        description: A unique Id to the underline SVA created and linked to this card at the platform
+      cardId:
+        type: string
+        description: A unique value for the combination of PAN and App-Id.
+      expirationDate:
+        description: Expiration date object.
+        $ref: '#/definitions/ExpirationDate'
+      formType:
+        type: string
+        description: Indicates whether card is Digital or Physical.
+      idempotentId:
+        type: string
+        description: Also serves as an idempotent check for duplicate issuance.
+      orderId:
+        type: string
+        description: Order ID of a physical card.
+      primaryAccountNumber:
+        type: string
+        description: Card number that was instantly issued.
+      profileId:
+        type: string
+        description: A unique Id to the underline Profile created at the platform for this card
+      status:
+        type: string
+        description: Card Status for the card.
+    title: CardEnrollmentResponse
+  CommonResponseOfCardEnrollmentResponse:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/CardEnrollmentResponse'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfCardEnrollmentResponse
+  CommonResponseOfEmptyResponse:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/EmptyResponse'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfEmptyResponse
+  CommonResponseOfGenerateCvv2Response:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/GenerateCvv2Response'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfGenerateCvv2Response
+  CommonResponseOfGetCardStatusResponse:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/GetCardStatusResponse'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfGetCardStatusResponse
+  CommonResponseOfProfileGetResponse:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/ProfileGetResponse'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfProfileGetResponse
+  CommonResponseOfProfileUpdateResponse:
+    type: object
+    required:
+      - processingTimeinMs
+      - receivedTimestamp
+      - resource
+    properties:
+      errors:
+        type: array
+        description: The response error container
+        items:
+          type: string
+      processingTimeinMs:
+        type: integer
+        format: int64
+        description: The processing time in milliseconds.
+      reason:
+        type: integer
+        format: int32
+        description: Error codes from backend system if available.
+      receivedTimestamp:
+        type: string
+        description: 'The time the request is received. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”. '
+      resource:
+        description: The response resource container
+        $ref: '#/definitions/ProfileUpdateResponse'
+      status:
+        type: integer
+        format: int32
+    title: CommonResponseOfProfileUpdateResponse
+  Customization:
+    type: object
+    properties:
+      cardStockId:
+        type: string
+        description: This is an override to the default cardstock configured at program level.
+      collateralId:
+        type: string
+        description: This is an override to the default collateral Id configured at program level.
+      expirationDate:
+        description: The expiration date for the physical card.
+        $ref: '#/definitions/ExpirationDate'
+      imageId:
+        type: string
+        description: This is the image ID coming from approved Image review vendor.
+    title: Customization
+  EmptyResponse:
+    type: object
+    properties:
+      links:
+        type: array
+        items:
+          $ref: '#/definitions/LinkResource'
+    title: EmptyResponse
+  ExpirationDate:
+    type: object
+    required:
+      - mm
+      - yy
+    properties:
+      mm:
+        type: string
+        description: 'The month the card expires. The value is in MM format. Ex: 01 for January and 12 for December'
+      yy:
+        type: string
+        description: 'The year the card expires. The value is in YY format. Ex: 20 implies 2020'
+    title: ExpirationDate
+  GenerateCvv2Request:
+    type: object
+    required:
+      - expirationDate
+    properties:
+      expirationDate:
+        description: Expiration date of card.
+        $ref: '#/definitions/ExpirationDate'
+    title: GenerateCvv2Request
+  GenerateCvv2RequestWithPan:
+    type: object
+    required:
+      - expirationDate
+      - primaryAccountNumber
+    properties:
+      expirationDate:
+        description: Expiration date of the card.
+        $ref: '#/definitions/ExpirationDate'
+      primaryAccountNumber:
+        type: string
+        description: 'The card number, which must be between 16 and 19 numeric digits.'
+    title: GenerateCvv2RequestWithPan
+  GenerateCvv2Response:
+    type: object
+    required:
+      - cvv2
+    properties:
+      cvv2:
+        type: string
+        description: 3 digit numeric CVV2 for the PAN.
+    title: GenerateCvv2Response
+  GetCardStatusResponse:
+    type: object
+    required:
+      - status
+    properties:
+      changedTimestamp:
+        type: string
+        description: 'The time the card status was changed. The value is in GMT time and format is “CCYY-MM-DD HH:MM:ss.SSS”.'
+      status:
+        type: string
+        description: Status for the card.
+        enum:
+          - LOST_STOLEN
+          - CLOSED
+          - ACTIVE
+          - SUSPENDED
+          - PENDINGACTIVATION
+    title: GetCardStatusResponse
+  InstantIssueCardRequest:
+    type: object
+    required:
+      - formType
+      - idempotentId
+    properties:
+      accountNumber:
+        type: string
+        description: Cardholder’s account number from the Issuers banking system.
+      customization:
+        description: If card is physical
+        $ref: '#/definitions/Customization'
+      formType:
+        type: string
+        description: 'Indicates if card type. Possible Values: PHYSICAL, DIGITAL, DIGITAL_PHYSICAL'
+      idempotentId:
+        type: string
+        description: 'A unique identifier in the client system which uniquely identifies a cardholder. '
+      profile:
+        description: CardHolder profile details.
+        $ref: '#/definitions/Profile'
+    title: InstantIssueCardRequest
+  LinkResource:
+    type: object
+    properties:
+      href:
+        type: string
+      rel:
+        type: string
+      type:
+        type: string
+    title: LinkResource
+  PinSetRequest:
+    type: object
+    required:
+      - pin
+    properties:
+      pin:
+        type: string
+        description: The new pin
+    title: PinSetRequest
+  PrimaryAddress:
+    type: object
+    properties:
+      city:
+        type: string
+        description: City.
+      countryCode:
+        type: string
+        description: Country code.
+      line1:
+        type: string
+        description: Address line 1.
+      line2:
+        type: string
+        description: Address line 2.
+      postalCode:
+        type: string
+        description: Postal code.
+      region:
+        type: string
+        description: Region.
+    title: PrimaryAddress
+  Profile:
+    type: object
+    properties:
+      address:
+        description: Address.
+        $ref: '#/definitions/Address'
+      emailAddress:
+        type: string
+        description: Email address.
+      firstName:
+        type: string
+        description: First name.
+      lastName:
+        type: string
+        description: Last name.
+      middleInitial:
+        type: string
+        description: Middle name.
+      phoneNumber:
+        type: string
+        description: Phone number.
+      suffix:
+        type: string
+        description: Suffix.
+      title:
+        type: string
+        description: Title.
+    title: Profile
+  ProfileGetResponse:
+    type: object
+    properties:
+      profile:
+        $ref: '#/definitions/Profile'
+    title: ProfileGetResponse
+  ProfileUpdateRequest:
+    type: object
+    properties:
+      profile:
+        description: Profile details.
+        $ref: '#/definitions/Profile'
+    title: ProfileUpdateRequest
+  ProfileUpdateResponse:
+    type: object
+    properties:
+      profile:
+        $ref: '#/definitions/Profile'
+    title: ProfileUpdateResponse
+  ReplaceCardRequest:
+    type: object
+    required:
+      - formType
+      - idempotentId
+    properties:
+      customization:
+        description: 'A unique identifier in the client system which uniquely identifies a cardholder. '
+        $ref: '#/definitions/Customization'
+      formType:
+        type: string
+        description: 'Indicates if card type. Possible Values: PHYSICAL, DIGITAL, DIGITAL_PHYSICAL'
+      idempotentId:
+        type: string
+        description: 'A unique identifier in the client system which uniquely identifies a cardholder. '
+    title: ReplaceCardRequest
+  UpdateCardStatusRequest:
+    type: object
+    required:
+      - cardStatus
+    properties:
+      cardStatus:
+        type: string
+        description: Card Status for the card.
+        enum:
+          - LOST_STOLEN
+          - CLOSED
+          - ACTIVE
+          - SUSPENDED
+    title: UpdateCardStatusRequest
